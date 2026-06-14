@@ -1,0 +1,214 @@
+{
+  "prefix": "smoke_",
+  "analyzed_at": "2026-06-04T20:14:14.121718+00:00",
+  "bootstrap": {
+    "method": "BCa",
+    "n_resamples": 10000,
+    "confidence_level": 0.95,
+    "seed": 12345
+  },
+  "n_operations": 60,
+  "n_errors": 0,
+  "latency": {
+    "concurrent": {
+      "grant": {
+        "n": 15,
+        "mean_ms": 2084.0,
+        "mean_ci95": [
+          2084.0,
+          2084.0
+        ],
+        "mean_ci_note": "amostra constante",
+        "p95_ms": 2084.0,
+        "p95_ci95": [
+          2084.0,
+          2084.0
+        ],
+        "p95_ci_note": "amostra constante"
+      },
+      "verify": {
+        "n": 12,
+        "mean_ms": 1853.0833333333333,
+        "mean_ci95": [
+          1853.0,
+          1853.4166666666667
+        ],
+        "mean_ci_note": null,
+        "p95_ms": 1853.45,
+        "p95_ci95": [
+          1853.0,
+          1854.0
+        ],
+        "p95_ci_note": null
+      },
+      "revoke": {
+        "n": 3,
+        "mean_ms": 1853.0,
+        "mean_ci95": [
+          1853.0,
+          1853.0
+        ],
+        "mean_ci_note": "amostra constante",
+        "p95_ms": 1853.0,
+        "p95_ci95": [
+          1853.0,
+          1853.0
+        ],
+        "p95_ci_note": "amostra constante"
+      }
+    },
+    "sequential": {
+      "grant": {
+        "n": 15,
+        "mean_ms": 1861.8666666666666,
+        "mean_ci95": [
+          1617.5160968389546,
+          1956.3333333333333
+        ],
+        "mean_ci_note": null,
+        "p95_ms": 2121.9,
+        "p95_ci95": [
+          2084.0,
+          2124.0
+        ],
+        "p95_ci_note": null
+      },
+      "verify": {
+        "n": 12,
+        "mean_ms": 2029.0,
+        "mean_ci95": [
+          1949.629994119439,
+          2089.2168930122652
+        ],
+        "mean_ci_note": null,
+        "p95_ms": 2127.45,
+        "p95_ci95": [
+          2123.0,
+          2128.0
+        ],
+        "p95_ci_note": null
+      },
+      "revoke": {
+        "n": 3,
+        "mean_ms": 2014.3333333333333,
+        "mean_ci95": [
+          1827.0,
+          2116.0
+        ],
+        "mean_ci_note": "n=3 pequeno (IC frágil)",
+        "p95_ms": 2127.2,
+        "p95_ci95": [
+          2058.3,
+          2132.0
+        ],
+        "p95_ci_note": "n=3 pequeno (IC frágil)"
+      }
+    }
+  },
+  "gas": {
+    "grant": {
+      "n": 30,
+      "min": 92082,
+      "max": 92106,
+      "distinct_count": 3,
+      "distinct": [
+        92082,
+        92094,
+        92106
+      ],
+      "note": "faixa de 24 gas: variação EIP-2028 (bytes-zero no calldata custam 4 vs 16); hashes aleatórios com algum 0x00 reduzem o gás"
+    },
+    "verify": {
+      "n": 24,
+      "min": 26259,
+      "max": 26259,
+      "distinct_count": 1,
+      "value": 26259,
+      "note": "valor único"
+    },
+    "revoke": {
+      "n": 6,
+      "min": 51222,
+      "max": 51222,
+      "distinct_count": 1,
+      "value": 51222,
+      "note": "valor único"
+    }
+  },
+  "propagation": {
+    "vs_first_node": {
+      "concurrent": {
+        "node1": {
+          "n": 3,
+          "median_ms": 111.0,
+          "mean_ms": 111.0,
+          "p95_ms": 111.0,
+          "max_ms": 111.0
+        },
+        "node2": {
+          "n": 3,
+          "median_ms": 38.0,
+          "mean_ms": 38.0,
+          "p95_ms": 38.0,
+          "max_ms": 38.0
+        },
+        "node3": {
+          "n": 3,
+          "median_ms": 0.0,
+          "mean_ms": 0.0,
+          "p95_ms": 0.0,
+          "max_ms": 0.0
+        }
+      },
+      "sequential": {
+        "node1": {
+          "n": 3,
+          "median_ms": 150.0,
+          "mean_ms": 109.33333333333333,
+          "p95_ms": 175.2,
+          "max_ms": 178.0
+        },
+        "node2": {
+          "n": 3,
+          "median_ms": 34.0,
+          "mean_ms": 52.666666666666664,
+          "p95_ms": 105.1,
+          "max_ms": 113.0
+        },
+        "node3": {
+          "n": 3,
+          "median_ms": 0.0,
+          "mean_ms": 26.666666666666668,
+          "p95_ms": 72.0,
+          "max_ms": 80.0
+        }
+      }
+    },
+    "vs_submit": {
+      "concurrent": {
+        "n": 9,
+        "median_ms": 1871.0,
+        "mean_ms": 1882.6666666666667,
+        "p95_ms": 1944.0,
+        "max_ms": 1944.0
+      },
+      "sequential": {
+        "n": 9,
+        "median_ms": 1922.0,
+        "mean_ms": 1942.5555555555557,
+        "p95_ms": 2050.4,
+        "max_ms": 2066.0
+      }
+    },
+    "coverage": {
+      "concurrent": {
+        "observed": 9,
+        "expected": 9
+      },
+      "sequential": {
+        "observed": 9,
+        "expected": 9
+      }
+    }
+  }
+}

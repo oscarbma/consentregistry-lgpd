@@ -1,0 +1,53 @@
+{
+  "startedAt": "2026-06-14T01:19:23.810Z",
+  "finishedAt": "2026-06-14T01:54:23.204Z",
+  "smoke": false,
+  "prefix": "",
+  "contract": "0x3dD3FB1Ae2708c1973584cC89C2A586ca296C16F",
+  "chainId": 2026,
+  "account": "0x41AAA4Cd7439ccd47794D288Ba24389D4bD5ec7d",
+  "submitNode": {
+    "name": "node1",
+    "endpoint": "http://localhost:8545"
+  },
+  "nodes": [
+    {
+      "name": "node1",
+      "endpoint": "http://localhost:8545"
+    },
+    {
+      "name": "node2",
+      "endpoint": "http://localhost:8546"
+    },
+    {
+      "name": "node3",
+      "endpoint": "http://localhost:8547"
+    }
+  ],
+  "blockPeriodSeconds": 2,
+  "mix": {
+    "grant": 0.5,
+    "verify": 0.4,
+    "revoke": 0.1
+  },
+  "opsPerMode": 1000,
+  "modes": [
+    "sequential",
+    "concurrent"
+  ],
+  "window": 20,
+  "pollMs": 35,
+  "seed": "encom2026",
+  "salts": {
+    "sequential": "sequential",
+    "concurrent": "concurrent"
+  },
+  "gasLimit": "500000",
+  "receiptPollMs": 50,
+  "propDrainMs": 15000,
+  "errors": 0,
+  "outputs": {
+    "operations": "operations.csv",
+    "propagation": "revocation_propagation.csv"
+  }
+}

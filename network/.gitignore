@@ -1,0 +1,6 @@
+# Artefatos gerados por generate-network.sh — NÃO versionar.
+# Reproduza-os rodando ./generate-network.sh.
+networkFiles/
+nodes/
+genesis.json
+.env

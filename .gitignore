@@ -1,0 +1,37 @@
+# Dependencias e ambientes (regeneraveis)
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Artefatos de build do Hardhat (regeneraveis)
+artifacts/
+cache/
+typechain-types/
+
+# ===== SEGREDOS — NUNCA publicar =====
+**/key
+*.key
+.env
+**/.env
+network/nodes/
+network/networkFiles/
+
+# Estado de cadeia / volumes (regeneravel, pesado)
+**/data/
+
+# Historico interno N=3 (fora do artefato N=4)
+results-N3-snapshot/
+
+# Sessao / sistema
+.claude/
+*.log
+.DS_Store
+Thumbs.db
+
+# Arquivos de processo interno (nao publicar)
+CLAUDE.md
+PROGRESS.md
+checklist_revisao_encom2026.md

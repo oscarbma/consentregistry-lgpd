@@ -1,0 +1,123 @@
+# Rede Hyperledger Besu permissionada — consenso QBFT, 3 nós validadores.
+#
+# Pré-requisito: rodar ./generate-network.sh primeiro. Ele cria genesis.json,
+# as chaves em nodes/node{1,2,3}/data/ e o .env com BOOTNODE_ENODE.
+#
+# Observações de operação em container (documentadas pela imagem oficial Besu):
+#   - O --data-path aponta para /data (volume montado). NÃO usamos o data-path
+#     padrão /opt/besu para montagem de volume.
+#   - --nat-method=DOCKER (nunca NONE/UPNP) para anúncio correto de IP entre nós.
+name: lab-consent-besu
+
+# Configuração comum a todos os validadores. Cada nó sobrescreve apenas o que
+# é específico (nome, IP, porta de RPC publicada e a presença de --bootnodes).
+x-besu-validator: &besu-validator
+  image: hyperledger/besu:${BESU_VERSION:-26.2.0}
+  restart: unless-stopped
+
+services:
+  # --- node1: também atua como BOOTNODE da rede -----------------------------
+  node1:
+    <<: *besu-validator
+    container_name: besu-node1
+    volumes:
+      - ./genesis.json:/genesis.json:ro
+      - node1-data:/data
+      - ./nodes/node1/data/key:/data/key:ro
+    ports:
+      - "8545:8545"   # RPC HTTP do node1 publicado no host em 8545
+    command:
+      - --data-path=/data
+      - --genesis-file=/genesis.json
+      - --node-private-key-file=/data/key
+      - --nat-method=DOCKER
+      - --p2p-host=172.16.239.11
+      - --p2p-port=30303
+      - --min-gas-price=0
+      - --rpc-http-enabled
+      - --rpc-http-host=0.0.0.0
+      - --rpc-http-port=8545
+      - --rpc-http-api=ETH,NET,WEB3,QBFT,ADMIN,TXPOOL
+      - --rpc-http-cors-origins=all
+      - --host-allowlist=*
+    networks:
+      besu:
+        ipv4_address: 172.16.239.11
+
+  # --- node2 ----------------------------------------------------------------
+  node2:
+    <<: *besu-validator
+    container_name: besu-node2
+    depends_on:
+      - node1
+    volumes:
+      - ./genesis.json:/genesis.json:ro
+      - node2-data:/data
+      - ./nodes/node2/data/key:/data/key:ro
+    ports:
+      - "8546:8545"   # RPC HTTP do node2 publicado no host em 8546
+    command:
+      - --data-path=/data
+      - --genesis-file=/genesis.json
+      - --node-private-key-file=/data/key
+      - --bootnodes=${BOOTNODE_ENODE}
+      - --nat-method=DOCKER
+      - --p2p-host=172.16.239.12
+      - --p2p-port=30303
+      - --min-gas-price=0
+      - --rpc-http-enabled
+      - --rpc-http-host=0.0.0.0
+      - --rpc-http-port=8545
+      - --rpc-http-api=ETH,NET,WEB3,QBFT,ADMIN,TXPOOL
+      - --rpc-http-cors-origins=all
+      - --host-allowlist=*
+    networks:
+      besu:
+        ipv4_address: 172.16.239.12
+
+  # --- node3 ----------------------------------------------------------------
+  node3:
+    <<: *besu-validator
+    container_name: besu-node3
+    depends_on:
+      - node1
+    volumes:
+      - ./genesis.json:/genesis.json:ro
+      - node3-data:/data
+      - ./nodes/node3/data/key:/data/key:ro
+    ports:
+      - "8547:8545"   # RPC HTTP do node3 publicado no host em 8547
+    command:
+      - --data-path=/data
+      - --genesis-file=/genesis.json
+      - --node-private-key-file=/data/key
+      - --bootnodes=${BOOTNODE_ENODE}
+      - --nat-method=DOCKER
+      - --p2p-host=172.16.239.13
+      - --p2p-port=30303
+      - --min-gas-price=0
+      - --rpc-http-enabled
+      - --rpc-http-host=0.0.0.0
+      - --rpc-http-port=8545
+      - --rpc-http-api=ETH,NET,WEB3,QBFT,ADMIN,TXPOOL
+      - --rpc-http-cors-origins=all
+      - --host-allowlist=*
+    networks:
+      besu:
+        ipv4_address: 172.16.239.13
+
+# Volumes nomeados = data-paths persistentes por nó (DB da blockchain).
+# A chave de validador é montada como bind read-only por cima, em /data/key.
+volumes:
+  node1-data:
+  node2-data:
+  node3-data:
+
+# Bridge com sub-rede fixa: os IPs estáticos casam com o enode do bootnode
+# derivado em generate-network.sh (.11 = node1/bootnode).
+networks:
+  besu:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.239.0/24

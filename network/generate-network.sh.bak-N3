@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+#
+# generate-network.sh
+# ---------------------------------------------------------------------------
+# Gera o genesis.json QBFT e as chaves dos 3 nós validadores da rede Besu,
+# usando um container Besu EFÊMERO. Não instala Java nem Besu no host.
+#
+# Saídas (geradas, não versionadas):
+#   - genesis.json                    : bloco gênese QBFT (com a lista de
+#                                       validadores embutida em extraData)
+#   - networkFiles/                   : artefato bruto do operator Besu
+#   - nodes/node{1,2,3}/data/key      : chave privada de cada validador
+#   - nodes/node{1,2,3}/data/key.pub  : chave pública de cada validador
+#   - .env                            : BOOTNODE_ENODE consumido pelo compose
+#
+# Uso:
+#   ./generate-network.sh            # usa BESU_VERSION padrão (26.2.0)
+#   BESU_VERSION=latest ./generate-network.sh   # override
+# ---------------------------------------------------------------------------
+set -euo pipefail
+
+# Versão estável atual do Besu (== latest). Override via variável de ambiente.
+BESU_VERSION="${BESU_VERSION:-26.2.0}"
+BESU_IMAGE="hyperledger/besu:${BESU_VERSION}"
+
+# IP estático do node1 na bridge do compose (deve casar com docker-compose.yml).
+BOOTNODE_IP="172.16.239.11"
+P2P_PORT="30303"
+
+# Diretório deste script (raiz da rede), independente de onde for chamado.
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$DIR"
+
+echo ">> Besu image: ${BESU_IMAGE}"
+
+# ---------------------------------------------------------------------------
+# 0) Limpeza idempotente de artefatos anteriores.
+# ---------------------------------------------------------------------------
+echo ">> Limpando artefatos anteriores (networkFiles/, nodes/, genesis.json, .env)"
+rm -rf networkFiles nodes genesis.json .env
+
+# ---------------------------------------------------------------------------
+# 1) Gera genesis + chaves num container Besu efêmero.
+#    --user evita que os arquivos saiam pertencendo ao root no host.
+#    O diretório de saída (--to) NÃO pode existir previamente.
+# ---------------------------------------------------------------------------
+echo ">> Gerando blockchain config (genesis + chaves dos 3 validadores)..."
+docker run --rm \
+  --user "$(id -u):$(id -g)" \
+  -v "${DIR}:/cfg" \
+  "${BESU_IMAGE}" \
+  operator generate-blockchain-config \
+  --config-file=/cfg/qbftConfigFile.json \
+  --to=/cfg/networkFiles \
+  --private-key-file-name=key
+
+# ---------------------------------------------------------------------------
+# 2) Copia o genesis para a raiz da rede (montado read-only em cada nó).
+# ---------------------------------------------------------------------------
+cp networkFiles/genesis.json genesis.json
+echo ">> genesis.json criado."
+
+# ---------------------------------------------------------------------------
+# 3) Distribui as chaves: o operator cria networkFiles/keys/<address>/{key,key.pub}.
+#    Atribuímos cada par a node1, node2, node3 em ordem determinística.
+# ---------------------------------------------------------------------------
+echo ">> Distribuindo chaves para nodes/node{1,2,3}/data/ ..."
+i=1
+for keydir in $(ls -d networkFiles/keys/*/ | sort); do
+  mkdir -p "nodes/node${i}/data"
+  cp "${keydir}key"     "nodes/node${i}/data/key"
+  cp "${keydir}key.pub" "nodes/node${i}/data/key.pub"
+  addr="$(basename "${keydir}")"
+  echo "   node${i} -> validador ${addr}"
+  i=$((i + 1))
+done
+
+if [ "$i" -ne 4 ]; then
+  echo "ERRO: esperava 3 validadores, encontrei $((i - 1))." >&2
+  exit 1
+fi
+
+# ---------------------------------------------------------------------------
+# 4) Deriva o enode do bootnode (node1) e grava o .env consumido pelo compose.
+#    enode = chave pública (sem o prefixo 0x) @ IP_do_node1 : porta_p2p
+# ---------------------------------------------------------------------------
+PUB="$(tr -d '\n' < nodes/node1/data/key.pub | sed 's/^0x//')"
+ENODE="enode://${PUB}@${BOOTNODE_IP}:${P2P_PORT}"
+printf 'BOOTNODE_ENODE=%s\n' "${ENODE}" > .env
+echo ">> .env gravado:"
+echo "   BOOTNODE_ENODE=${ENODE}"
+
+echo ""
+echo ">> Rede gerada com sucesso. Próximo passo:"
+echo "   docker compose up -d"

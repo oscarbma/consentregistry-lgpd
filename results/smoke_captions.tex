@@ -1,0 +1,20 @@
+% Legendas sugeridas (PT-BR) — geradas por benchmark/report.py
+
+% --- Tabela ---
+% Ver \caption em table_results.tex (Tabela~\ref{tab:resultados}).
+
+% --- Figura 1 (fig1_latency) ---
+\caption{Distribuição da latência de confirmação (intervalo submissão$\rightarrow$recibo)
+por tipo de operação e modo de submissão, em 1.000 operações por modo. A latência
+concentra-se próxima ao teto do período de bloco (2\,s), refletindo a geometria de
+inclusão do consenso QBFT e não o custo de execução; o gás (Tabela~\ref{tab:resultados}),
+e não a latência, é o sinal determinístico por operação.}
+\label{fig:latencia}
+
+% --- Figura 2 (fig2_propagation) ---
+\caption{Propagação da revogação entre os três nós validadores: atraso de observação
+de cada nó em relação ao primeiro a expor o evento \texttt{ConsentRevoked}
+($\Delta$ vs.\ 1º nó), medido por \emph{polling} HTTP ($\sim$35\,ms). Em QBFT os três
+nós confirmam o mesmo bloco; o atraso medido é de importação/observação via RPC --- não
+de propagação do dado, pois apenas a prova (hash) trafega, nunca o dado pessoal.}
+\label{fig:propagacao}

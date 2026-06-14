@@ -1,0 +1,19 @@
+{
+  "name": "lab-consent-benchmark",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Camada de benchmark (geração de ops sintéticas, latência, gás, propagação de revogação) sobre o ConsentRegistry na rede Besu/QBFT",
+  "scripts": {
+    "generate": "tsx src/generate.ts",
+    "bench": "tsx src/run.ts",
+    "smoke": "tsx src/run.ts --smoke"
+  },
+  "dependencies": {
+    "ethers": "^6.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.3"
+  }
+}

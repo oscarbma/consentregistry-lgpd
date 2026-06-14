@@ -1,0 +1,222 @@
+{
+  "prefix": null,
+  "analyzed_at": "2026-06-14T02:07:46.120554+00:00",
+  "bootstrap": {
+    "method": "BCa",
+    "n_resamples": 10000,
+    "confidence_level": 0.95,
+    "seed": 12345
+  },
+  "n_operations": 2000,
+  "n_errors": 0,
+  "latency": {
+    "concurrent": {
+      "grant": {
+        "n": 500,
+        "mean_ms": 1988.134,
+        "mean_ci95": [
+          1976.8527273958202,
+          1999.2920421312542
+        ],
+        "mean_ci_note": null,
+        "p95_ms": 2110.0,
+        "p95_ci95": [
+          2110.0,
+          2111.0
+        ],
+        "p95_ci_note": "percentil (BCa degenerou: dados empatados)"
+      },
+      "verify": {
+        "n": 400,
+        "mean_ms": 1979.5225,
+        "mean_ci95": [
+          1966.5049588685808,
+          1991.7731507771591
+        ],
+        "mean_ci_note": null,
+        "p95_ms": 2115.0,
+        "p95_ci95": [
+          2114.0,
+          2116.0
+        ],
+        "p95_ci_note": "percentil (BCa degenerou: dados empatados)"
+      },
+      "revoke": {
+        "n": 100,
+        "mean_ms": 1992.76,
+        "mean_ci95": [
+          1966.6486780295586,
+          2018.6101615954735
+        ],
+        "mean_ci_note": null,
+        "p95_ms": 2116.0,
+        "p95_ci95": [
+          2115.0,
+          2116.0
+        ],
+        "p95_ci_note": null
+      }
+    },
+    "sequential": {
+      "grant": {
+        "n": 500,
+        "mean_ms": 1988.2,
+        "mean_ci95": [
+          1976.1806067053246,
+          1999.73
+        ],
+        "mean_ci_note": null,
+        "p95_ms": 2110.0,
+        "p95_ci95": [
+          2109.0,
+          2111.0
+        ],
+        "p95_ci_note": "percentil (BCa degenerou: dados empatados)"
+      },
+      "verify": {
+        "n": 400,
+        "mean_ms": 1991.82,
+        "mean_ci95": [
+          1979.4302305262406,
+          2004.3700041263526
+        ],
+        "mean_ci_note": null,
+        "p95_ms": 2109.05,
+        "p95_ci95": [
+          2109.0,
+          2111.05
+        ],
+        "p95_ci_note": null
+      },
+      "revoke": {
+        "n": 100,
+        "mean_ms": 1968.74,
+        "mean_ci95": [
+          1942.7555291955707,
+          1994.8716794474644
+        ],
+        "mean_ci_note": null,
+        "p95_ms": 2109.05,
+        "p95_ci95": [
+          2108.0,
+          2112.0
+        ],
+        "p95_ci_note": null
+      }
+    }
+  },
+  "gas": {
+    "grant": {
+      "n": 1000,
+      "min": 92070,
+      "max": 92106,
+      "distinct_count": 4,
+      "distinct": [
+        92070,
+        92082,
+        92094,
+        92106
+      ],
+      "note": "faixa de 36 gas: variação EIP-2028 (bytes-zero no calldata custam 4 vs 16); hashes aleatórios com algum 0x00 reduzem o gás"
+    },
+    "verify": {
+      "n": 800,
+      "min": 26235,
+      "max": 26259,
+      "distinct_count": 3,
+      "distinct": [
+        26235,
+        26247,
+        26259
+      ],
+      "note": "faixa de 24 gas: variação EIP-2028 (bytes-zero no calldata custam 4 vs 16); hashes aleatórios com algum 0x00 reduzem o gás"
+    },
+    "revoke": {
+      "n": 200,
+      "min": 51210,
+      "max": 51222,
+      "distinct_count": 2,
+      "distinct": [
+        51210,
+        51222
+      ],
+      "note": "faixa de 12 gas: variação EIP-2028 (bytes-zero no calldata custam 4 vs 16); hashes aleatórios com algum 0x00 reduzem o gás"
+    }
+  },
+  "propagation": {
+    "vs_first_node": {
+      "concurrent": {
+        "node1": {
+          "n": 100,
+          "median_ms": 0.0,
+          "mean_ms": 12.8,
+          "p95_ms": 19.549999999999343,
+          "max_ms": 253.0
+        },
+        "node2": {
+          "n": 100,
+          "median_ms": 0.0,
+          "mean_ms": 6.92,
+          "p95_ms": 37.0,
+          "max_ms": 40.0
+        },
+        "node3": {
+          "n": 100,
+          "median_ms": 0.0,
+          "mean_ms": 12.74,
+          "p95_ms": 13.899999999999324,
+          "max_ms": 253.0
+        }
+      },
+      "sequential": {
+        "node1": {
+          "n": 100,
+          "median_ms": 49.5,
+          "mean_ms": 61.29,
+          "p95_ms": 159.74999999999994,
+          "max_ms": 237.0
+        },
+        "node2": {
+          "n": 100,
+          "median_ms": 36.5,
+          "mean_ms": 60.39,
+          "p95_ms": 169.34999999999997,
+          "max_ms": 207.0
+        },
+        "node3": {
+          "n": 100,
+          "median_ms": 35.0,
+          "mean_ms": 55.64,
+          "p95_ms": 176.39999999999992,
+          "max_ms": 225.0
+        }
+      }
+    },
+    "vs_submit": {
+      "concurrent": {
+        "n": 300,
+        "median_ms": 2005.0,
+        "mean_ms": 2008.37,
+        "p95_ms": 2206.15,
+        "max_ms": 2228.0
+      },
+      "sequential": {
+        "n": 300,
+        "median_ms": 1975.0,
+        "mean_ms": 1975.1466666666668,
+        "p95_ms": 2165.0,
+        "max_ms": 2214.0
+      }
+    },
+    "coverage": {
+      "concurrent": {
+        "observed": 300,
+        "expected": 300
+      },
+      "sequential": {
+        "observed": 300,
+        "expected": 300
+      }
+    }
+  }
+}

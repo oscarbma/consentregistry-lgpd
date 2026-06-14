@@ -1,0 +1,27 @@
+% Gerado por benchmark/report.py — tabela de resultados (prefixo: smoke_)
+% Requer: \usepackage{booktabs}, \usepackage{multirow}, \usepackage{graphicx}
+\begin{table}[t]
+  \centering
+  \caption{Latência (média e $p_{95}$, em ms) com intervalo de confiança de
+  95\% por bootstrap BCa (10.000 reamostragens; queda para percentil quando o
+  BCa degenera por empates no teto de bloco) e gás por operação. 1.000 operações
+  por modo de submissão (mistura 50\% grant / 40\% verify / 10\% revoke) no
+  \textsc{ConsentRegistry} sobre Hyperledger Besu/QBFT (N{=}3, blockperiod
+  2\,s, gasPrice 0).}
+  \label{tab:resultados}
+  \resizebox{\columnwidth}{!}{%
+  \begin{tabular}{llrrrr}
+    \toprule
+    Modo & Op. & $n$ & Latência média (ms) [IC 95\%] & $p_{95}$ (ms) [IC 95\%] & Gás \\
+    \midrule
+\multirow{3}{*}{Sequencial} & grant & 15 & 1862~[1618,\,1956] & 2122~[2084,\,2124] & 92106 \\
+ & verify & 12 & 2029~[1950,\,2089] & 2127~[2123,\,2128] & 26259 \\
+ & revoke & 3 & 2014~[1827,\,2116] & 2127~[2058,\,2132] & 51222 \\
+\midrule
+\multirow{3}{*}{Concorrente} & grant & 15 & 2084~[2084,\,2084] & 2084~[2084,\,2084] & 92106 \\
+ & verify & 12 & 1853~[1853,\,1853] & 1853~[1853,\,1854] & 26259 \\
+ & revoke & 3 & 1853~[1853,\,1853] & 1853~[1853,\,1853] & 51222 \\
+\bottomrule
+  \end{tabular}%
+  }
+\end{table}
