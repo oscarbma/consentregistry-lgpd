@@ -1,6 +1,6 @@
 # ConsentRegistry — Mapeamento de Primitivas do Hyperledger Besu sob a LGPD
 
-Artefato de reproducao do artigo **"Criptografia Aplicada a Gestao de Consentimento sob a LGPD: Mapeamento de Primitivas do Hyperledger Besu"**, submetido ao **ENCOM 2026**.
+Artefato de reproducao do artigo **"Criptografia Aplicada ao Registro de Consentimento sob a LGPD: Mapeamento de Primitivas do Hyperledger Besu"**, submetido ao **ENCOM 2026**.
 
 **Autores:** Oscar Bruno Maciel de Abreu, Joao Crisostomo Weyl Albuquerque Costa, Rosinei de Sousa Oliveira
 Programa de Pos-Graduacao em Engenharia Eletrica (PPGEE) — Universidade Federal do Para (UFPA)
