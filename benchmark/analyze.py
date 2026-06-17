@@ -8,7 +8,7 @@ Lê os CSVs crus exportados pelo runner (sem agregação) e produz:
   - Gás por tipo: valor único para verify/revoke; faixa + nota EIP-2028
     (variação por bytes-zero no calldata) para grant.
   - Propagação de revogação: distribuição de delta_ms_vs_first_node por nó
-    (skew de observação entre os 3 nós) e delta_ms_vs_submit (inclusão).
+    (skew de observação entre os 4 nós) e delta_ms_vs_submit (inclusão).
 
 Saída: tabela formatada para o artigo + results/<prefix>summary.json.
 
@@ -195,7 +195,7 @@ def print_tables(latency: dict, gas: dict, prop: dict, prefix: str) -> None:
         val = str(e["value"]) if "value" in e else f"{e['min']}–{e['max']}"
         print(f"  {t:<7} {e['n']:>4}  {val:<14}  {e['note']}")
 
-    print("\n● Propagação de revogação entre os 3 nós\n")
+    print("\n● Propagação de revogação entre os 4 nós\n")
     print("  Skew vs. primeiro nó a observar (delta_ms_vs_first_node):")
     print(f"  {'modo':<11} {'nó':<7} {'n':>4}  {'mediana':>8}  {'média':>8}  {'p95':>8}  {'máx':>8}")
     print("  " + "-" * 60)
